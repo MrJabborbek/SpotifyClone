@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SpotifyCloneYT</string>
+    <string name="notification_channel_name">Songs</string>
+    <string name="notification_channel_description">Song name will be here</string>
 </resources>
