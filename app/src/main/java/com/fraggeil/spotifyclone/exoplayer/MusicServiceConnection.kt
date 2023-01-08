@@ -2,8 +2,6 @@ package com.fraggeil.spotifyclone.exoplayer
 
 import android.content.ComponentName
 import android.content.Context
-import android.media.session.MediaController
-import android.media.session.PlaybackState
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaBrowserCompat.SubscriptionCallback
@@ -16,20 +14,20 @@ import com.fraggeil.spotifyclone.other.Constants.NETWORK_ERROR
 import com.fraggeil.spotifyclone.other.Event
 import com.fraggeil.spotifyclone.other.Resource
 
-class MusicPlayerConnection(
+class MusicServiceConnection(
     context: Context
 ) {
     private var _isConnected = MutableLiveData<Event<Resource<Boolean>>>()
-    private var isConnected : LiveData<Event<Resource<Boolean>>> = _isConnected
+     var isConnected : LiveData<Event<Resource<Boolean>>> = _isConnected
 
     private var _networkError = MutableLiveData<Event<Resource<Boolean>>>()
-    private var networkError: LiveData<Event<Resource<Boolean>>> = _networkError
+    var networkError: LiveData<Event<Resource<Boolean>>> = _networkError
 
-    private var _networkState = MutableLiveData<PlaybackStateCompat?>()
-    private var networkState : LiveData<PlaybackStateCompat?> = _networkState
+    private var _playbackState = MutableLiveData<PlaybackStateCompat?>()
+    var playbackState : LiveData<PlaybackStateCompat?> = _playbackState
 
     private var _curPlayingSong = MutableLiveData<MediaMetadataCompat?>()
-    private var curPlayingSong : LiveData<MediaMetadataCompat?> = _curPlayingSong
+    var curPlayingSong : LiveData<MediaMetadataCompat?> = _curPlayingSong
 
     lateinit var mediaController: MediaControllerCompat
     private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback(context)
@@ -94,7 +92,7 @@ class MusicPlayerConnection(
     private inner class MediaControllerCallback : MediaControllerCompat.Callback() {
 
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
-            _networkState.postValue(state)
+            _playbackState.postValue(state)
         }
 
         override fun onMetadataChanged(metadata: MediaMetadataCompat?) {

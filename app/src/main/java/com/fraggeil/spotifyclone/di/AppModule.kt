@@ -5,6 +5,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.fraggeil.spotifyclone.R
+import com.fraggeil.spotifyclone.adapters.SwipeSongAdapter
+import com.fraggeil.spotifyclone.exoplayer.MusicServiceConnection
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +17,15 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+    @Singleton
+    @Provides
+    fun provideSwipeSongAdapter() = SwipeSongAdapter()
+
+    @Singleton
+    @Provides
+    fun provideMusicServiceConnection(
+        @ApplicationContext context: Context
+    ) = MusicServiceConnection(context)
 
     @Singleton
     @Provides

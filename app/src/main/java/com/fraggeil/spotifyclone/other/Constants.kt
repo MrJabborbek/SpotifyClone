@@ -5,6 +5,8 @@ object Constants {
 
     const val MEDIA_ROOT_ID = "media_id"
 
+    const val UPDATE_PLAYER_POSITION_INTERVAL = 100L
+
     const val NETWORK_ERROR =  "NETWORK_ERROR"
 
     const val NOTIFICATION_CHANNEL_ID = "songs"
