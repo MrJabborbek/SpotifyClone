@@ -3,8 +3,10 @@ package com.fraggeil.spotifyclone.di
 import android.content.Context
 import com.fraggeil.spotifyclone.data.remote.MusicDatabase
 import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
+import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import dagger.Module
@@ -34,7 +36,7 @@ object ServiceModule {
     fun provideExoPlayer(
         @ApplicationContext context: Context,
         audioAttributes: AudioAttributes
-    ) = SimpleExoPlayer.Builder(context).apply {
+    ) = ExoPlayer.Builder(context).apply {
         setAudioAttributes(audioAttributes, true)
         setHandleAudioBecomingNoisy(true)
     }.build()
@@ -43,6 +45,6 @@ object ServiceModule {
     @Provides
     fun provideDataSourceFactory(
         @ApplicationContext context: Context
-    ) = DefaultDataSourceFactory(context, Util.getUserAgent(context, "Spotify app"))
+    ) = DefaultDataSource.Factory(context)
 
 }

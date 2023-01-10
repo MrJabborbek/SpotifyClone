@@ -13,9 +13,15 @@ class MusicPlayerEventListener(
     private val musicService: MusicService
 
 ) : Player.Listener{
-    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        super.onPlayerStateChanged(playWhenReady, playbackState)
-        if (playbackState == STATE_READY && !playWhenReady){
+    var mPlayWhenReady = false
+    override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
+        super.onPlayWhenReadyChanged(playWhenReady, reason)
+        mPlayWhenReady = playWhenReady
+    }
+
+    override fun onPlaybackStateChanged(playbackState: Int) {
+        super.onPlaybackStateChanged(playbackState)
+        if (playbackState == STATE_READY && !mPlayWhenReady){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 musicService.stopForeground(Service.STOP_FOREGROUND_DETACH)
             }else{
@@ -23,6 +29,16 @@ class MusicPlayerEventListener(
             }
         }
     }
+//    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+//        super.onPlayerStateChanged(playWhenReady, playbackState)
+//        if (playbackState == STATE_READY && !playWhenReady){
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                musicService.stopForeground(Service.STOP_FOREGROUND_DETACH)
+//            }else{
+//                musicService.stopForeground(false)
+//            }
+//        }
+//    }
 
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)

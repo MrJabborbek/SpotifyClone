@@ -1,6 +1,7 @@
 package com.fraggeil.spotifyclone.exoplayer
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
@@ -13,10 +14,12 @@ import com.fraggeil.spotifyclone.exoplayer.callbacks.MusicPlayerEventListener
 import com.fraggeil.spotifyclone.exoplayer.callbacks.NotificationListener
 import com.fraggeil.spotifyclone.other.Constants.MEDIA_ROOT_ID
 import com.fraggeil.spotifyclone.other.Constants.NETWORK_ERROR
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
+import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -28,10 +31,10 @@ private const val SESSION_TAG = "media_session"
 class MusicService : MediaBrowserServiceCompat() {
 
     @Inject
-    lateinit var dataSourceFactory: DefaultDataSourceFactory
+    lateinit var dataSourceFactory: DefaultDataSource.Factory
 
     @Inject
-    lateinit var exoPlayer: SimpleExoPlayer
+    lateinit var exoPlayer: ExoPlayer
 
     @Inject
     lateinit var firebaseMusicSource: FirebaseMusicSource
@@ -60,7 +63,7 @@ class MusicService : MediaBrowserServiceCompat() {
             firebaseMusicSource.fetchMediaData()
         }
         val activityIntent = packageManager?.getLaunchIntentForPackage(packageName)?.let {
-            PendingIntent.getActivity(this, 0, it, 0)
+            PendingIntent.getActivity(this, 0, it, FLAG_IMMUTABLE)
         }
 
         mediaSession = MediaSessionCompat(this, SESSION_TAG).apply {

@@ -11,13 +11,14 @@ import com.fraggeil.spotifyclone.exoplayer.State.*
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class FirebaseMusicSource @Inject constructor(
-    val musicDatabase: MusicDatabase
+    private val musicDatabase: MusicDatabase
 ){
 
     var songs = emptyList<MediaMetadataCompat>()
@@ -41,7 +42,7 @@ class FirebaseMusicSource @Inject constructor(
         state = STATE_INITIALIZED
     }
 
-    fun asMediaSource(dataSourceFactory: DefaultDataSourceFactory): ConcatenatingMediaSource{
+    fun asMediaSource(dataSourceFactory: DefaultDataSource.Factory): ConcatenatingMediaSource{
         val concatenatingMediaSource = ConcatenatingMediaSource()
         songs.forEach { song ->
             val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)

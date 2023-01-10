@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.RequestManager
 import com.fraggeil.spotifyclone.R
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         subscribeToObservers()
 
         binding.vpSong.adapter = swipeSongAdapter
@@ -58,10 +61,10 @@ class MainActivity : AppCompatActivity() {
             }
         })
         binding.vpSong.setOnClickListener {
-            binding.navHostFragment.findNavController().navigate(R.id.action_global_songFragment)
+            navHostFragment.findNavController().navigate(R.id.action_global_songFragment)
         }
 
-        binding.navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
+        navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.songFragment -> hideBottomBar()
                 else -> showBottomBar()

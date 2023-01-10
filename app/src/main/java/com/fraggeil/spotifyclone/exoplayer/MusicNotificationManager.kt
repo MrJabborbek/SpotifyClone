@@ -18,11 +18,11 @@ import com.google.android.exoplayer2.ui.PlayerNotificationManager.MediaDescripti
 
 class MusicNotificationManager(
     private val context: Context,
-    private val sessionToken : MediaSessionCompat.Token,
-    private val notificationListener: PlayerNotificationManager.NotificationListener,
-    private val songsCallback: () -> Unit
+    sessionToken : MediaSessionCompat.Token,
+    notificationListener: PlayerNotificationManager.NotificationListener,
+    private val newSongCallback: () -> Unit
 ) {
-    private lateinit var notificationManager: PlayerNotificationManager
+    private var notificationManager: PlayerNotificationManager
 
     init {
         val  mediaController = MediaControllerCompat(context, sessionToken)
@@ -45,6 +45,7 @@ class MusicNotificationManager(
 
     private inner class DescriptionAdapter(private val mediaController: MediaControllerCompat): MediaDescriptionAdapter {
         override fun getCurrentContentTitle(player: Player): CharSequence {
+            newSongCallback()
             return mediaController.metadata.description.title.toString()
         }
 
